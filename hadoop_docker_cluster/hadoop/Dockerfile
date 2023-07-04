@@ -6,7 +6,7 @@ ARG HADOOP_VERSION=3.1.1
 RUN wget https://archive.apache.org/dist/hadoop/core/hadoop-$HADOOP_VERSION/hadoop-$HADOOP_VERSION.tar.gz -P /home/hadoop/
 RUN tar -xzf /home/hadoop/hadoop-$HADOOP_VERSION.tar.gz -C /home/hadoop/
 RUN mv /home/hadoop/hadoop-$HADOOP_VERSION /home/hadoop/hadoop
-RUN rm -rf /home/hadoop/hadoop-$HADOOPVERSION*
+RUN rm -rf /home/hadoop/hadoop-$HADOOP_VERSION*
 
 # set environment variables
 ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64

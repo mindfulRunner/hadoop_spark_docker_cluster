@@ -20,7 +20,7 @@ Tutorial
 Component versions
 ==============================
 	
-	Cloudera Docs/Cloudera Runtime7.2.14?(Public Cloud • latest)
+	Cloudera Docs/Cloudera Runtime7.2.14?(Public Cloud ï¿½ latest)
 
 	CLOUDERA RUNTIME RELEASE NOTESPDF version
 
@@ -65,8 +65,10 @@ Component versions
 	https://archive.apache.org/dist/sqoop/1.4.7/sqoop-1.4.7.tar.gz
 	https://archive.apache.org/dist/zeppelin/zeppelin-0.8.2/zeppelin-0.8.2.tgz
 	https://archive.apache.org/dist/zookeeper/zookeeper-3.5.5/apache-zookeeper-3.5.5.tar.gz
-	
+	https://archive.apache.org/dist/cassandra/4.1.2/apache-cassandra-4.1.2-bin.tar.gz
+
 	- D:\aaa\workout\techs\bigdata\a_docker\20220308\hadoop_docker_cluster\README.md
+		CASSANDRA_VERSION=4.1.2
 		DERBY_VERSION=10.14.1.0
 		FLUME_VERSION=1.9.0
 		HADOOP_VERSION=3.1.1
@@ -160,7 +162,48 @@ Move default WSL2 / Docker location
 			- install Docker Desktop
 			
 			
-			
+
+Enable Docker in WSL2
+==============================
+
+	- build.sh and cluster.sh are Shell scripts, cannot be run directly in MS Command Line
+	- need to run build.sh and cluster.sh in WSL2 linux terminal
+
+	[error] - failed to run docker in WSL2 although docker is found in PATH
+			(o@o:/mnt/c/a/workout/techs/bigdata/a_docker/20220308/hadoop_docker_cluster$ echo $PATH
+			...:/mnt/c/Program Files/Docker/Docker/resources/bin:...)
+
+		o@o:/mnt/c/a/workout/techs/bigdata/a_docker/20220308/hadoop_docker_cluster$ docker --help
+
+		The command 'docker' could not be found in this WSL 2 distro.
+		We recommend to activate the WSL integration in Docker Desktop settings.
+
+		For details about using Docker Desktop with WSL 2, visit:
+
+		https://docs.docker.com/go/wsl2/
+
+		[investigation]
+		- use wsl.exe command to check Docker state in MS Command Line
+			- C:\a\workout\techs\bigdata\a_docker\20220308\hadoop_docker_cluster>wsl -l -v
+				NAME                   STATE           VERSION
+			  * Ubuntu-22.04           Running         2
+				docker-desktop-data    Stopped         2
+				docker-desktop         Stopped         2
+		- start Docker Desktop from Start Menu
+		- Docker Desktop -> Settings -> Resources -> WSL INTEGRATION
+			- enable WSL2 (Ubuntu 22.04.2 LTS)
+
+			C:\a\workout\techs\bigdata\a_docker\20220308\hadoop_docker_cluster>wsl -l -v
+				NAME                   STATE           VERSION
+			  * Ubuntu-22.04           Running         2
+				docker-desktop         Running         2
+				docker-desktop-data    Running         2
+
+			o@o:/mnt/c/a/workout/techs/bigdata/a_docker/20220308/hadoop_docker_cluster$ docker -v
+			Docker version 24.0.2, build cb74dfc
+
+
+
 - Hadoop
 =========================================
 	- hdfs namenode -format

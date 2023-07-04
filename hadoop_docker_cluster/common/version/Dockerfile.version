@@ -5,6 +5,7 @@ FROM ubuntu
 #   - NOT working yet
 #
 # D:\aaa\workout\techs\bigdata\a_docker\hadoop-suite-hdp-3.1.5\Dockerfile
+ARG CASSANDRA_VERSION=4.1.2
 ARG DERBY_VERSION=10.14.1.0
 ARG HADOOP_VERSION=3.1.1
 ARG HBASE_VERSION=2.1.6

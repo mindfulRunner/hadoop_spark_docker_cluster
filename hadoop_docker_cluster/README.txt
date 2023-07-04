@@ -13,6 +13,12 @@ cluster.sh install
 start cluster
 cluster.sh start
 
+NOTE:
+    - build.sh, cluster.sh are Shell scripts, can't run in MS Command Line
+    - need to run in WSL2 Ubuntu terminal
+        o@o:/mnt/c/a/workout/techs/bigdata/a_docker/20220308/hadoop_docker_cluster$ ./cluster.sh start
+
+
 enter any container like this (**docker exec -u hadoop -it nodemaster /bin/bash**)
 D:\aaa\workout\techs\bigdata\a_docker\20220308\hadoop_docker_cluster>docker exec -u hadoop -it nodemaster /bin/bash
 hadoop@nodemaster:/$
@@ -94,7 +100,47 @@ Note:
 
 
 
+**Test with Cassandra**
+
+hadoop@node2:/$ /home/hadoop/cassandra/bin/cqlsh
+Connected to Test Cluster at 127.0.0.1:9042
+[cqlsh 6.1.0 | Cassandra 4.1.2 | CQL spec 3.4.6 | Native protocol v5]
+Use HELP for help.
+cqlsh> desc keyspaces;
+
+system       system_distributed  system_traces  system_virtual_schema
+system_auth  system_schema       system_views
+
+cqlsh> quit
+
+
+
 **Test with Spark**
+
+hadoop@node2:/$ spark-shell
+2023-07-01 06:10:35,821 WARN util.NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+Spark context Web UI available at http://node2:4040
+Spark context available as 'sc' (master = local[*], app id = local-1688191848354).
+Spark session available as 'spark'.
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /___/ .__/\_,_/_/ /_/\_\   version 3.0.0
+      /_/
+
+Using Scala version 2.12.10 (OpenJDK 64-Bit Server VM, Java 1.8.0_362)
+Type in expressions to have them evaluated.
+Type :help for more information.
+
+scala> spark.range(10 * 10).count
+res0: Long = 100
+
+scala> :quit
+hadoop@node2:/$
+
 
 
 NOTE:

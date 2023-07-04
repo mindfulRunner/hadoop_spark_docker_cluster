@@ -48,6 +48,8 @@ function startServices {
     docker exec -u hadoop -d edge /home/hadoop/kafka/bin/kafka-server-start.sh -daemon /home/hadoop/kafka/config/server.properties
     echo ">> Starting Zeppelin..."
     docker exec -u hadoop -d zeppelin /home/hadoop/zeppelin/bin/zeppelin-daemon.sh start
+    echo ">> Starting Cassandra..."
+    docker exec -u hadoop -d cassandra /home/hadoop/cassandra/bin/cassandra -f -R
     echo "Hadoop info @ nodemaster: http://172.20.1.1:8088/cluster"
     echo "DFS Health @ nodemaster: http://172.20.1.1:50070/dfshealth"
     echo "MR-JobHistory Server @ nodemaster: http://172.20.1.1:19888"
@@ -116,6 +118,7 @@ if [[ $1 = "install" ]]; then
     docker run -d --net hadoopnet --ip 172.20.1.6 -p 8080:8080 --hostname nifi --add-host nodemaster:172.20.1.1 --add-host node2:172.20.1.2 --add-host node3:172.20.1.3 --add-host psqlhms:172.20.1.4 --name nifi -it runner/hadoop_cluster:nifi
     docker run -d --net hadoopnet --ip 172.20.1.7 -p 8888:8888 --hostname huenode --add-host edge:172.20.1.5 --add-host nodemaster:172.20.1.1 --add-host node2:172.20.1.2 --add-host node3:172.20.1.3 --add-host psqlhms:172.20.1.4 --name hue -it runner/hadoop_cluster:hue
     docker run -d --net hadoopnet --ip 172.20.1.8 -p 8081:8081 --hostname zeppelin --add-host edge:172.20.1.5 --add-host nodemaster:172.20.1.1 --add-host node2:172.20.1.2 --add-host node3:172.20.1.3 --add-host psqlhms:172.20.1.4 --name zeppelin -it runner/hadoop_cluster:zeppelin
+    docker run -d --net hadoopnet --ip 172.20.1.9 --hostname node2 --add-host nodemaster:172.20.1.1 --add-host node3:172.20.1.3 --name cassandra -it runner/hadoop_cluster:cassandra
 
     # format nodemaster
     echo ">> Formatting HDFS..."
@@ -131,9 +134,7 @@ fi
 
 if [[ $1 = "uninstall" ]]; then
     stopServices
-    docker rmi -f runner/hadoop_cluster:common runner/hadoop_cluster:hadoop runner/hadoop_cluster:postgresql-hms runner/hadoop_cluster:spark runner/hadoop_cluster:hive runner/hadoop_cluster:hue runner/hadoop_cluster:edge runner/hadoop_cluster:nifi runner/hadoop_cluster:zeppelin
-    docker network rm hadoopnet
-    docker system prune -a
+    docker rm -f $(docker ps -a -q)
     exit
 fi
 
