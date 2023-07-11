@@ -22,4 +22,4 @@ docker build -f ./hue/Dockerfile . -t runner/hadoop_cluster:hue
 
 docker build -f ./zeppelin/Dockerfile . -t runner/hadoop_cluster:zeppelin
 
-docker build -f ./cassandra/Dockerfile . -t runner/hadoop_cluster:cassandra
+docker build -f ./cassandra/Dockerfile . -t runner/hadoop_cluster:spark-cassandra

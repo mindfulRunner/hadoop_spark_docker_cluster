@@ -1,4 +1,4 @@
-FROM runner/hadoop_cluster:common
+FROM runner/hadoop_cluster:spark
 
 ARG CASSANDRA_VERSION=4.1.2
 
