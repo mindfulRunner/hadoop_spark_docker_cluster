@@ -1,6 +1,7 @@
 FROM runner/hadoop_cluster:common
 
-ARG HADOOP_VERSION=3.1.1
+# ARG HADOOP_VERSION=3.1.1
+ARG HADOOP_VERSION=3.3.0
 
 # get hadoop
 RUN wget https://archive.apache.org/dist/hadoop/core/hadoop-$HADOOP_VERSION/hadoop-$HADOOP_VERSION.tar.gz -P /home/hadoop/
@@ -40,7 +41,7 @@ ADD configs/workers $HADOOP_HOME/etc/hadoop/workers
 
 # configure core-site.xml
 RUN cp $HADOOP_HOME/etc/hadoop/core-site.xml $HADOOP_HOME/etc/hadoop/core-site.xml.original && \
-	sed -i 's|</configuration>|<property>\n<name>fs.default.name</name>\n<value>hdfs://localhost:9000</value>\n</property>\n<property>\n<name>hadoop.proxyuser.root.groups</name>\n<value>*</value>\n</property>\n<property>\n<name>hadoop.proxyuser.root.hosts</name>\n<value>*</value>\n</property>\n</configuration>|' $HADOOP_HOME/etc/hadoop/core-site.xml
+	sed -i 's|</configuration>|<property>\n<name>fs.default.name</name>\n<value>hdfs://nodemaster:9000</value>\n</property>\n<property>\n<name>hadoop.proxyuser.root.groups</name>\n<value>*</value>\n</property>\n<property>\n<name>hadoop.proxyuser.root.hosts</name>\n<value>*</value>\n</property>\n</configuration>|' $HADOOP_HOME/etc/hadoop/core-site.xml
 
 # configure hdfs-site.xml
 RUN cp $HADOOP_HOME/etc/hadoop/hdfs-site.xml $HADOOP_HOME/etc/hadoop/hdfs-site.xml.original && \
@@ -56,5 +57,7 @@ RUN cp $HADOOP_HOME/etc/hadoop/mapred-site.xml $HADOOP_HOME/etc/hadoop/mapred-si
 
 RUN chown hadoop:hadoop -R /home/hadoop/data
 RUN chown hadoop:hadoop -R /home/hadoop/hadoop
+
+RUN usermod -aG sudo hadoop
 
 CMD service ssh start && bash

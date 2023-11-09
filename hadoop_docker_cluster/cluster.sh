@@ -117,18 +117,19 @@ if [[ $1 = "install" ]]; then
     #       - hadoop
     #       - spark
     #
-    # http://localhost:8088  -> Cluster (All Applications)
-    # http://localhost:9870  -> NameNode information
-    # http://localhost:9868  -> Secondary NameNode
-    # http://localhost:8042  -> NodeManager information
+    # http://localhost:8088  -> Yarn Cluster (All Applications, Yarn application master)
+    # http://localhost:9870  -> HDFS NameNode information
+    # http://localhost:9868  -> HDFS Secondary NameNode
+    # http://localhost:8042  -> HDFS NodeManager information
     # http://localhost:4040  -> Spark Web UI port
+    # http://localhost:18080 -> Spark Job History Server port
     # http://localhost:18089 -> Spark History Server port
     # http://localhost:9092  -> Kafka broker listening port
     # http://localhost:9042  -> Cassandra listening port
     echo ">> Starting master and worker nodes..."
     docker run -d --net hadoopnet --ip 172.20.1.1 -p 8088:8088 -p 9870:9870 -p 9868:9868 -p 8042:8042 --hostname nodemaster --add-host node2:172.20.1.2 --add-host node3:172.20.1.3 --name nodemaster -it runner/hadoop_cluster:hive
-    docker run -d --net hadoopnet --ip 172.20.1.2 -p 4040:4040 -p 18089:18089 --hostname node2 --add-host nodemaster:172.20.1.1 --add-host node3:172.20.1.3 --name node2 -it runner/hadoop_cluster:spark-cassandra
-    docker run -d --net hadoopnet --ip 172.20.1.3 --hostname node3 --add-host nodemaster:172.20.1.1 --add-host node2:172.20.1.2 --name node3 -it runner/hadoop_cluster:spark
+    docker run -d --net hadoopnet --ip 172.20.1.2 -p 9042:9042 --hostname node2 --add-host nodemaster:172.20.1.1 --add-host node3:172.20.1.3 --name node2 -it runner/hadoop_cluster:spark-cassandra
+    docker run -d --net hadoopnet --ip 172.20.1.3 -p 4040:4040 -p 18080:18080 -p 18089:18089 --hostname node3 --add-host nodemaster:172.20.1.1 --add-host node2:172.20.1.2 --name node3 -it runner/hadoop_cluster:spark
     docker run -d --net hadoopnet --ip 172.20.1.5 -p 9092:9092 --hostname edge --add-host nodemaster:172.20.1.1 --add-host node2:172.20.1.2 --add-host node3:172.20.1.3 --add-host psqlhms:172.20.1.4 --name edge -it runner/hadoop_cluster:edge
     docker run -d --net hadoopnet --ip 172.20.1.6 -p 8080:8080 --hostname nifi --add-host nodemaster:172.20.1.1 --add-host node2:172.20.1.2 --add-host node3:172.20.1.3 --add-host psqlhms:172.20.1.4 --name nifi -it runner/hadoop_cluster:nifi
     docker run -d --net hadoopnet --ip 172.20.1.7 -p 8888:8888 --hostname huenode --add-host edge:172.20.1.5 --add-host nodemaster:172.20.1.1 --add-host node2:172.20.1.2 --add-host node3:172.20.1.3 --add-host psqlhms:172.20.1.4 --name hue -it runner/hadoop_cluster:hue

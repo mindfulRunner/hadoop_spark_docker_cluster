@@ -9,6 +9,8 @@ RUN apt-get update
 
 # install python for pyspark
 RUN apt-get install -y python3 python3-pip
+RUN export PYSPARK_PYTHON=/usr/bin/python3
+RUN export PYSPARK_DRIVER_PYTHON=/usr/bin/python3
 
 # install OpenJDK 8
 RUN apt-get install -y openjdk-8-jre openjdk-8-jdk openssh-server vim

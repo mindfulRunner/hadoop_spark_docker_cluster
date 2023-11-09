@@ -213,6 +213,8 @@ Enable Docker in WSL2
 	
 	- stop-yarn.sh
 	- stop-dfs.sh
+	
+	- jps
 
 
 	- HDFS
