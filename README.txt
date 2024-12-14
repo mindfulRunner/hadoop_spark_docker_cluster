@@ -169,18 +169,19 @@ Enable Docker in WSL2
 	- build.sh and cluster.sh are Shell scripts, cannot be run directly in MS Command Line
 	- need to run build.sh and cluster.sh in WSL2 linux terminal
 
-	[error] - failed to run docker in WSL2 although docker is found in PATH
+	[error] 
+		- failed to run docker in WSL2 although docker is found in PATH
 			(o@o:/mnt/c/a/workout/techs/bigdata/a_docker/20220308/hadoop_docker_cluster$ echo $PATH
 			...:/mnt/c/Program Files/Docker/Docker/resources/bin:...)
 
-		o@o:/mnt/c/a/workout/techs/bigdata/a_docker/20220308/hadoop_docker_cluster$ docker --help
+			o@o:/mnt/c/a/workout/techs/bigdata/a_docker/20220308/hadoop_docker_cluster$ docker --help
 
-		The command 'docker' could not be found in this WSL 2 distro.
-		We recommend to activate the WSL integration in Docker Desktop settings.
+			The command 'docker' could not be found in this WSL 2 distro.
+			We recommend to activate the WSL integration in Docker Desktop settings.
 
-		For details about using Docker Desktop with WSL 2, visit:
+			For details about using Docker Desktop with WSL 2, visit:
 
-		https://docs.docker.com/go/wsl2/
+			https://docs.docker.com/go/wsl2/
 
 		[investigation]
 		- use wsl.exe command to check Docker state in MS Command Line
@@ -189,6 +190,8 @@ Enable Docker in WSL2
 			  * Ubuntu-22.04           Running         2
 				docker-desktop-data    Stopped         2
 				docker-desktop         Stopped         2
+		
+		[SOLUTION]
 		- start Docker Desktop from Start Menu
 		- Docker Desktop -> Settings -> Resources -> WSL INTEGRATION
 			- enable WSL2 (Ubuntu 22.04.2 LTS)
